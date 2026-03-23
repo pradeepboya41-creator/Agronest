@@ -115,6 +115,24 @@ margin-top:20px;
 }
 </style>
 </head>
+<h2>📊 AgroNest Dashboard</h2>
+
+<div id="dashboard" style="display:flex; gap:20px; flex-wrap:wrap;">
+    <div style="padding:15px; background:#e8f5e9; border-radius:10px;">
+        <h3>Total Farmers</h3>
+        <p id="totalFarmers">0</p>
+    </div>
+
+    <div style="padding:15px; background:#fff3e0; border-radius:10px;">
+        <h3>Rice Farmers</h3>
+        <p id="riceCount">0</p>
+    </div>
+
+    <div style="padding:15px; background:#e3f2fd; border-radius:10px;">
+        <h3>Wheat Farmers</h3>
+        <p id="wheatCount">0</p>
+    </div>
+</div>
 <h2>🌾 Add Farmer</h2>
 
 <input type="text" id="name" placeholder="Farmer Name"><br><br>
@@ -316,6 +334,21 @@ async function loadFarmers() {
     const res = await fetch("https://agronest.onrender.com/api/farmers");
     const data = await res.json();
 
+    // Dashboard
+    document.getElementById("totalFarmers").innerText = data.length;
+
+    let rice = 0;
+    let wheat = 0;
+
+    data.forEach(f => {
+        if (f.crop.toLowerCase() === "rice") rice++;
+        if (f.crop.toLowerCase() === "wheat") wheat++;
+    });
+
+    document.getElementById("riceCount").innerText = rice;
+    document.getElementById("wheatCount").innerText = wheat;
+
+    // List
     document.getElementById("farmersList").innerHTML =
         data.map(f => 
             `<p>
@@ -325,7 +358,9 @@ async function loadFarmers() {
         ).join("");
 }
 
+// Load automatically
 loadFarmers();
+</script>
 </script>
 </script>
 </body>
