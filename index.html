@@ -264,6 +264,21 @@ result.innerText="Select symptom";
 }
 
 </script>
+<button onclick="loadMessage()">Check Backend</button>
+<p id="output">Click button to test</p>
 
+<script>
+async function loadMessage() {
+    try {
+        const res = await fetch("https://agronest.onrender.com/api/message");
+        const data = await res.json();
+
+        document.getElementById("output").innerText = data.message;
+    } catch (err) {
+        document.getElementById("output").innerText = "Connection failed ❌";
+        console.log(err);
+    }
+}
+</script>
 </body>
 </html>
