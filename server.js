@@ -52,7 +52,17 @@ app.get("/api/farmers", async (req, res) => {
     res.status(500).json({ error: "Error fetching farmers" });
   }
 });
-
+app.get("/api/farmers", async (req, res) => {
+  // existing code
+});
+app.delete("/api/farmer/:id", async (req, res) => {
+  try {
+    await Farmer.findByIdAndDelete(req.params.id);
+    res.json({ message: "Farmer deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Error deleting farmer" });
+  }
+});
 // ✅ Start server + connect MongoDB
 const PORT = process.env.PORT || 5000;
 
