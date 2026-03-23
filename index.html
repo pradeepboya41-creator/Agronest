@@ -115,7 +115,18 @@ margin-top:20px;
 }
 </style>
 </head>
+<h2>🌾 Add Farmer</h2>
 
+<input type="text" id="name" placeholder="Farmer Name"><br><br>
+<input type="text" id="crop" placeholder="Crop"><br><br>
+<input type="text" id="location" placeholder="Location"><br><br>
+
+<button onclick="addFarmer()">Add Farmer</button>
+
+<hr>
+
+<h2>📊 Farmers List</h2>
+<div id="farmersList"></div>
 <body>
 
 <!-- NAV -->
@@ -213,14 +224,14 @@ margin-top:20px;
 <!-- CONTACT -->
 <section id="contact">
 <div class="contact">
-<h2>Contact Me</h2>
+<h2>Contact us</h2>
 <p>Email: pradeepboya62@gmail.com</p>
 <p>Phone: 6281253041</p>
 </div>
 </section>
 
 <footer>
-<p>© 2026 AgroNest 🌱 | Built by Pradeep</p>
+<p>© 2026 AgroNest 🌱 | Built by Boya Pradeepsagar</p>
 </footer>
 
 <script>
@@ -279,6 +290,46 @@ async function loadMessage() {
         console.log(err);
     }
 }
+</script>
+<script>
+async function addFarmer() {
+    const name = document.getElementById("name").value;
+    const crop = document.getElementById("crop").value;
+    const location = document.getElementById("location").value;
+
+    if (!name || !crop || !location) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    await fetch("https://agronest.onrender.com/api/farmer", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, crop, location })
+    });
+
+    // Clear inputs
+    document.getElementById("name").value = "";
+    document.getElementById("crop").value = "";
+    document.getElementById("location").value = "";
+
+    loadFarmers();
+}
+
+async function loadFarmers() {
+    const res = await fetch("https://agronest.onrender.com/api/farmers");
+    const data = await res.json();
+
+    document.getElementById("farmersList").innerHTML =
+        data.map(f => 
+            `<p>👨‍🌾 <b>${f.name}</b> - ${f.crop} (${f.location})</p>`
+        ).join("");
+}
+
+// Load data on page open
+loadFarmers();
 </script>
 </body>
 </html>
