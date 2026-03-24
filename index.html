@@ -1,367 +1,1665 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AgroNest 🌱</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins;}
-
-body{
-background:linear-gradient(to right,#e8f5e9,#ffffff);
-color:#333;
-}
-
-/* NAV */
-nav{
-display:flex;justify-content:space-between;align-items:center;
-padding:20px 60px;background:white;
-box-shadow:0 3px 15px rgba(0,0,0,0.1);
-}
-
-.logo{font-size:24px;font-weight:700;color:#2e7d32;}
-
-nav ul{display:flex;list-style:none;gap:25px;}
-nav a{text-decoration:none;color:#333;font-weight:500;}
-
-/* HERO */
-.hero{
-height:90vh;
-background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
-url("https://images.unsplash.com/photo-1500382017468-9049fed747ef");
-background-size:cover;background-position:center;
-display:flex;flex-direction:column;justify-content:center;
-align-items:center;text-align:center;color:white;
-}
-
-.hero h1{font-size:55px;margin-bottom:10px;}
-.hero p{font-size:18px;}
-
-/* SECTION */
-section{padding:70px 10%;text-align:center;}
-
-h2{color:#1b5e20;margin-bottom:20px;}
-
-/* SEARCH */
-.search{
-width:300px;padding:12px;border-radius:25px;
-border:1px solid #ccc;margin-bottom:30px;
-outline:none;
-}
-
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-}
-
-/* CARD */
-.card{
-background:white;padding:25px;border-radius:15px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-8px);
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-}
-
-/* ML BOX */
-.ml-box{
-background:white;
-padding:30px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-display:inline-block;
-}
-
-select{
-padding:10px;border-radius:10px;border:1px solid #ccc;
-}
-
-button{
-padding:12px 25px;border:none;border-radius:20px;
-background:#2e7d32;color:white;font-weight:600;
-cursor:pointer;
-margin-top:15px;
-}
-
-button:hover{background:#1b5e20;}
-
-#result{
-margin-top:15px;font-weight:bold;
-color:#1b5e20;
-}
-
-/* CONTACT */
-.contact{
-background:#2e7d32;
-color:white;
-padding:50px;
-margin-top:40px;
-border-radius:20px;
-}
-
-/* FOOTER */
-footer{
-text-align:center;
-padding:20px;
-margin-top:20px;
-}
-</style>
-</head>
-<h2>📊 AgroNest Dashboard</h2>
-
-<div id="dashboard" style="display:flex; gap:20px; flex-wrap:wrap;">
-    <div style="padding:15px; background:#e8f5e9; border-radius:10px;">
-        <h3>Total Farmers</h3>
-        <p id="totalFarmers">0</p>
-    </div>
-
-    <div style="padding:15px; background:#fff3e0; border-radius:10px;">
-        <h3>Rice Farmers</h3>
-        <p id="riceCount">0</p>
-    </div>
-
-    <div style="padding:15px; background:#e3f2fd; border-radius:10px;">
-        <h3>Wheat Farmers</h3>
-        <p id="wheatCount">0</p>
-    </div>
-</div>
-<h2>🌾 Add Farmer</h2>
-
-<input type="text" id="name" placeholder="Farmer Name"><br><br>
-<input type="text" id="crop" placeholder="Crop"><br><br>
-<input type="text" id="location" placeholder="Location"><br><br>
-
-<button onclick="addFarmer()">Add Farmer</button>
-
-<hr>
-
-<h2>📊 Farmers List</h2>
-<div id="farmersList"></div>
-<body>
-
-<!-- NAV -->
-<nav>
-<div class="logo">AgroNest 🌱</div>
-<ul>
-<li><a href="#">Home</a></li>
-<li><a href="#pest">Pesticides</a></li>
-<li><a href="#disease">Diseases</a></li>
-<li><a href="#ml">Prediction</a></li>
-<li><a href="#contact">Contact</a></li>
-</ul>
-</nav>
-
-<!-- HERO -->
-<div class="hero">
-<h1>AgroNest 🌱</h1>
-<p>Smart agriculture guidance for farmers</p>
-</div>
-
-<!-- PEST -->
-<section id="pest">
-<h2>Protect Your Crops</h2>
-
-<input class="search" id="pestSearch" placeholder="Search pest...">
-
-<div class="grid" id="pestList">
-
-<div class="card" data-name="aphids">
-<h3>Neem Oil</h3>
-<p>Controls aphids & whiteflies</p>
-</div>
-
-<div class="card" data-name="termites">
-<h3>Chlorpyrifos</h3>
-<p>Controls termites</p>
-</div>
-
-<div class="card" data-name="caterpillars">
-<h3>BT Spray</h3>
-<p>Controls caterpillars</p>
-</div>
-
-</div>
-</section>
-
-<!-- DISEASE -->
-<section id="disease">
-<h2>Plant Diseases</h2>
-
-<input class="search" id="disSearch" placeholder="Search disease...">
-
-<div class="grid" id="disList">
-
-<div class="card" data-name="leaf spot">
-<h3>Leaf Spot</h3>
-<p>Use fungicide</p>
-</div>
-
-<div class="card" data-name="powdery mildew">
-<h3>Powdery Mildew</h3>
-<p>Use sulfur spray</p>
-</div>
-
-<div class="card" data-name="bacterial wilt">
-<h3>Bacterial Wilt</h3>
-<p>Crop rotation needed</p>
-</div>
-
-</div>
-</section>
-
-<!-- ML -->
-<section id="ml">
-<h2>🌿 Disease Prediction</h2>
-
-<div class="ml-box">
-
-<select id="symptom">
-<option value="">Select Symptom</option>
-<option value="yellow">Yellow Leaves</option>
-<option value="spots">Leaf Spots</option>
-<option value="wilting">Wilting</option>
-</select>
-
-<br>
-
-<button onclick="predictDisease()">Predict</button>
-
-<p id="result"></p>
-
-</div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-<div class="contact">
-<h2>Contact </h2>
-<p>Email: pradeepboya62@gmail.com</p>
-<p>Phone: 6281253041</p>
-</div>
-</section>
-
-<footer>
-<p>© 2026 AgroNest 🌱 | Built by Boya Pradeepsagar</p>
-</footer>
-
-<script>
-
-// SEARCH FUNCTION
-function search(inputId,listId){
-let input=document.getElementById(inputId);
-
-input.addEventListener("keyup",function(){
-let value=this.value.toLowerCase();
-
-let cards=document.querySelectorAll("#"+listId+" .card");
-
-cards.forEach(card=>{
-let name=card.getAttribute("data-name");
-
-card.style.display=name.includes(value)?"block":"none";
-});
-});
-}
-
-search("pestSearch","pestList");
-search("disSearch","disList");
-
-// ML
-function predictDisease(){
-let s=document.getElementById("symptom").value;
-
-if(s==="yellow"){
-result.innerText="Nitrogen Deficiency 🌾";
-}
-else if(s==="spots"){
-result.innerText="Leaf Spot Disease 🍂";
-}
-else if(s==="wilting"){
-result.innerText="Bacterial Wilt 🌿";
-}
-else{
-result.innerText="Select symptom";
-}
-}
-
-</script>
-<button onclick="loadMessage()">Check Backend</button>
-<p id="output">Click button to test</p>
-
-<script>
-async function addFarmer() {
-    const name = document.getElementById("name").value;
-    const crop = document.getElementById("crop").value;
-    const location = document.getElementById("location").value;
-
-    if (!name || !crop || !location) {
-        alert("Please fill all fields");
-        return;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgroNest Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f4f8f3;
+      --bg2: #eef6ec;
+      --surface: rgba(255,255,255,0.82);
+      --surface-strong: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: rgba(15,23,42,0.08);
+      --primary: #15803d;
+      --primary-2: #16a34a;
+      --primary-3: #22c55e;
+      --dark: #0f172a;
+      --danger: #dc2626;
+      --warning: #f59e0b;
+      --shadow-sm: 0 10px 30px rgba(15,23,42,0.06);
+      --shadow-md: 0 18px 50px rgba(15,23,42,0.10);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --sidebar-width: 280px;
     }
 
-    await fetch("https://agronest.onrender.com/api/farmer", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, crop, location })
-    });
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Inter',sans-serif;
+    }
 
-    document.getElementById("name").value = "";
-    document.getElementById("crop").value = "";
-    document.getElementById("location").value = "";
+    html, body{
+      height:100%;
+    }
+
+    body{
+      background:
+        radial-gradient(circle at top left, rgba(34,197,94,0.10), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(132,204,22,0.08), transparent 24%),
+        linear-gradient(135deg, var(--bg), var(--bg2));
+      color:var(--text);
+      overflow:hidden;
+    }
+
+    img{
+      display:block;
+      max-width:100%;
+    }
+
+    button, input, select{
+      font:inherit;
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    /* AUTH */
+    #auth{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      background:
+        linear-gradient(135deg, rgba(21,128,61,0.92), rgba(34,197,94,0.88)),
+        url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat;
+      animation:fadeIn .7s ease;
+    }
+
+    .auth-shell{
+      width:min(100%, 980px);
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      overflow:hidden;
+      border-radius:32px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.20);
+      background:rgba(255,255,255,0.10);
+      backdrop-filter: blur(14px);
+    }
+
+    .auth-left{
+      padding:46px;
+      color:white;
+      background:
+        linear-gradient(160deg, rgba(15,23,42,0.36), rgba(15,23,42,0.14));
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:28px;
+    }
+
+    .auth-brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .auth-brand-mark{
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,0.18);
+      border:1px solid rgba(255,255,255,0.18);
+      font-size:26px;
+    }
+
+    .auth-brand h1{
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-0.03em;
+    }
+
+    .auth-brand p{
+      font-size:13px;
+      color:rgba(255,255,255,0.84);
+      margin-top:4px;
+    }
+
+    .auth-copy h2{
+      font-size:44px;
+      line-height:0.98;
+      letter-spacing:-0.05em;
+      font-weight:800;
+      margin-bottom:16px;
+    }
+
+    .auth-copy p{
+      font-size:15px;
+      line-height:1.8;
+      color:rgba(255,255,255,0.90);
+      max-width:440px;
+    }
+
+    .auth-features{
+      display:grid;
+      gap:14px;
+    }
+
+    .auth-feature{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding:15px 16px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.10);
+      border:1px solid rgba(255,255,255,0.12);
+    }
+
+    .auth-feature span{
+      font-size:20px;
+    }
+
+    .auth-feature strong{
+      display:block;
+      font-size:14px;
+      font-weight:800;
+      margin-bottom:4px;
+    }
+
+    .auth-feature small{
+      color:rgba(255,255,255,0.80);
+      line-height:1.6;
+      font-size:12px;
+    }
+
+    .auth-right{
+      background:white;
+      padding:42px 34px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .auth-form-wrap{
+      max-width:360px;
+      width:100%;
+      margin:0 auto;
+      animation:zoomIn .5s ease;
+    }
+
+    .auth-top{
+      margin-bottom:24px;
+    }
+
+    .auth-top h3{
+      font-size:32px;
+      letter-spacing:-0.04em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .auth-top p{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .auth-tabs{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      background:#eef5ee;
+      padding:6px;
+      border-radius:16px;
+      margin-bottom:18px;
+    }
+
+    .auth-tab{
+      border:none;
+      background:transparent;
+      color:#334155;
+      padding:12px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.25s ease;
+    }
+
+    .auth-tab.active{
+      background:white;
+      color:var(--primary);
+      box-shadow:var(--shadow-sm);
+    }
+
+    .field{
+      margin-bottom:14px;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      color:#334155;
+      margin-bottom:8px;
+    }
+
+    .field input{
+      width:100%;
+      padding:14px 15px;
+      border-radius:16px;
+      border:1px solid #dce6dd;
+      background:#f8fbf8;
+      outline:none;
+      transition:.25s ease;
+    }
+
+    .field input:focus{
+      border-color:rgba(21,128,61,0.35);
+      background:white;
+      box-shadow:0 0 0 4px rgba(34,197,94,0.08);
+    }
+
+    .auth-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      margin:6px 0 18px;
+      flex-wrap:wrap;
+    }
+
+    .text-btn{
+      border:none;
+      background:none;
+      color:var(--primary);
+      font-weight:700;
+      cursor:pointer;
+      padding:0;
+    }
+
+    .primary-btn{
+      width:100%;
+      border:none;
+      cursor:pointer;
+      color:white;
+      background:linear-gradient(135deg, var(--primary), var(--primary-3));
+      padding:14px 18px;
+      border-radius:16px;
+      font-weight:800;
+      box-shadow:0 14px 30px rgba(21,128,61,0.18);
+      transition:.25s ease;
+    }
+
+    .primary-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .auth-note{
+      text-align:center;
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* APP */
+    #app{
+      display:none;
+      height:100vh;
+    }
+
+    .sidebar{
+      width:var(--sidebar-width);
+      height:100vh;
+      position:fixed;
+      left:0;
+      top:0;
+      background:
+        linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      color:white;
+      padding:22px 18px;
+      box-shadow: 20px 0 50px rgba(15,23,42,0.18);
+      z-index:20;
+      animation:slideLeft .6s ease;
+      overflow-y:auto;
+    }
+
+    .sidebar-brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:10px 10px 18px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      margin-bottom:20px;
+    }
+
+    .sidebar-mark{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, var(--primary), var(--primary-3));
+      font-size:22px;
+      box-shadow:0 12px 28px rgba(21,128,61,0.28);
+    }
+
+    .sidebar-brand h2{
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:-0.03em;
+    }
+
+    .sidebar-brand p{
+      color:rgba(255,255,255,0.66);
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .side-label{
+      color:rgba(255,255,255,0.46);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-weight:800;
+      padding:8px 12px 10px;
+    }
+
+    .nav-btn{
+      width:100%;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border:none;
+      background:transparent;
+      color:rgba(255,255,255,0.84);
+      padding:13px 14px;
+      border-radius:14px;
+      cursor:pointer;
+      text-align:left;
+      font-weight:700;
+      transition:.25s ease;
+      margin-bottom:6px;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active{
+      background:linear-gradient(135deg, rgba(34,197,94,0.18), rgba(21,128,61,0.18));
+      color:white;
+      transform:translateX(4px);
+    }
+
+    .nav-icon{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,0.08);
+      font-size:17px;
+      flex-shrink:0;
+    }
+
+    .main{
+      margin-left:var(--sidebar-width);
+      height:100vh;
+      overflow-y:auto;
+      padding:24px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      background:rgba(255,255,255,0.70);
+      border:1px solid rgba(255,255,255,0.9);
+      box-shadow:var(--shadow-sm);
+      backdrop-filter:blur(12px);
+      border-radius:24px;
+      padding:16px 20px;
+      margin-bottom:20px;
+      animation:fadeIn .7s ease;
+    }
+
+    .topbar h3{
+      font-size:26px;
+      font-weight:800;
+      letter-spacing:-0.04em;
+    }
+
+    .topbar p{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:4px;
+    }
+
+    .user-pill{
+      padding:10px 14px;
+      border-radius:999px;
+      background:white;
+      border:1px solid var(--line);
+      font-weight:700;
+      color:var(--primary);
+      box-shadow:var(--shadow-sm);
+      white-space:nowrap;
+    }
+
+    .hero-banner{
+      position:relative;
+      height:260px;
+      border-radius:28px;
+      overflow:hidden;
+      margin-bottom:22px;
+      box-shadow:var(--shadow-md);
+      animation:fadeIn .9s ease;
+    }
+
+    .hero-banner::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg, rgba(15,23,42,0.55), rgba(15,23,42,0.12));
+      z-index:1;
+    }
+
+    .hero-banner img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:opacity .6s ease;
+    }
+
+    .banner-copy{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      padding:28px;
+      color:white;
+    }
+
+    .banner-copy h2{
+      font-size:38px;
+      line-height:1;
+      letter-spacing:-0.05em;
+      font-weight:800;
+      margin-bottom:10px;
+      max-width:700px;
+    }
+
+    .banner-copy p{
+      max-width:620px;
+      font-size:15px;
+      line-height:1.75;
+      color:rgba(255,255,255,0.88);
+    }
+
+    .section{
+      display:none;
+      animation:fadeUp .35s ease;
+    }
+
+    .section.active{
+      display:block;
+    }
+
+    .section-head{
+      margin-bottom:18px;
+    }
+
+    .section-head h2{
+      font-size:32px;
+      letter-spacing:-0.04em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .section-head p{
+      color:var(--muted);
+      line-height:1.8;
+      font-size:14px;
+      max-width:760px;
+    }
+
+    .metrics-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:24px;
+    }
+
+    .metric{
+      background:var(--surface-strong);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:24px;
+      box-shadow:var(--shadow-sm);
+      transition:.25s ease;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .metric:hover{
+      transform:translateY(-4px);
+      box-shadow:var(--shadow-md);
+    }
+
+    .metric::before{
+      content:"";
+      position:absolute;
+      top:-30px;
+      right:-30px;
+      width:110px;
+      height:110px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(34,197,94,0.12), transparent 70%);
+    }
+
+    .metric-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .metric-top span{
+      font-size:13px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .metric-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:rgba(34,197,94,0.10);
+      color:var(--primary);
+      font-size:18px;
+    }
+
+    .metric-value{
+      font-size:36px;
+      font-weight:800;
+      letter-spacing:-0.05em;
+      line-height:1;
+      margin-bottom:8px;
+    }
+
+    .metric-note{
+      font-size:13px;
+      line-height:1.6;
+      color:var(--muted);
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1.05fr 0.95fr;
+      gap:20px;
+    }
+
+    .panel{
+      background:var(--surface-strong);
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:24px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .panel h3{
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:-0.03em;
+      margin-bottom:6px;
+    }
+
+    .panel-sub{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+      margin-bottom:18px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .field-card{
+      display:grid;
+      gap:8px;
+    }
+
+    .field-card.full{
+      grid-column:1 / -1;
+    }
+
+    .field-card label{
+      font-size:13px;
+      font-weight:700;
+      color:#334155;
+    }
+
+    .field-card input,
+    .field-card select{
+      width:100%;
+      padding:14px 15px;
+      border-radius:16px;
+      border:1px solid #dde7de;
+      background:#f8fbf8;
+      outline:none;
+      transition:.25s ease;
+    }
+
+    .field-card input:focus,
+    .field-card select:focus{
+      background:white;
+      border-color:rgba(21,128,61,0.35);
+      box-shadow:0 0 0 4px rgba(34,197,94,0.08);
+    }
+
+    .row-actions{
+      display:flex;
+      gap:12px;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      padding:13px 18px;
+      border-radius:16px;
+      font-weight:800;
+      transition:.25s ease;
+    }
+
+    .btn-primary{
+      color:white;
+      background:linear-gradient(135deg, var(--primary), var(--primary-3));
+      box-shadow:0 14px 28px rgba(21,128,61,0.18);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-secondary{
+      color:#1e293b;
+      background:white;
+      border:1px solid var(--line);
+    }
+
+    .btn-danger{
+      color:white;
+      background:linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow:0 12px 24px rgba(220,38,38,0.18);
+    }
+
+    .help{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.7;
+      margin-top:12px;
+    }
+
+    .list-grid{
+      display:grid;
+      gap:14px;
+      max-height:520px;
+      overflow:auto;
+      padding-right:4px;
+    }
+
+    .farmer-card{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:14px;
+      align-items:center;
+      background:linear-gradient(180deg,#fff 0%, #fbfefb 100%);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      transition:.25s ease;
+    }
+
+    .farmer-card:hover{
+      transform:translateY(-2px);
+      box-shadow:var(--shadow-md);
+    }
+
+    .farmer-meta{
+      display:grid;
+      gap:6px;
+    }
+
+    .farmer-name{
+      font-size:17px;
+      font-weight:800;
+      letter-spacing:-0.02em;
+    }
+
+    .farmer-sub{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .data-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+      gap:18px;
+    }
+
+    .data-card{
+      background:var(--surface-strong);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      box-shadow:var(--shadow-sm);
+      transition:.25s ease;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .data-card:hover{
+      transform:translateY(-5px);
+      box-shadow:var(--shadow-md);
+    }
+
+    .data-card::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:4px;
+      background:linear-gradient(90deg, var(--primary), #84cc16);
+    }
+
+    .data-card h4{
+      font-size:19px;
+      font-weight:800;
+      letter-spacing:-0.02em;
+      margin-bottom:10px;
+    }
+
+    .data-card p{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.75;
+    }
+
+    .search-row{
+      display:flex;
+      gap:12px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .search-row input{
+      flex:1;
+      min-width:240px;
+      padding:14px 15px;
+      border-radius:16px;
+      border:1px solid #dde7de;
+      background:#f8fbf8;
+      outline:none;
+    }
+
+    .ml-result{
+      margin-top:18px;
+      min-height:72px;
+      background:rgba(21,128,61,0.08);
+      color:var(--primary);
+      border:1px solid rgba(21,128,61,0.10);
+      padding:18px;
+      border-radius:18px;
+      font-weight:800;
+      line-height:1.7;
+    }
+
+    .empty{
+      padding:24px;
+      border-radius:20px;
+      border:1px dashed rgba(15,23,42,0.14);
+      background:#fbfdfb;
+      text-align:center;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:14px;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0}
+      to{opacity:1}
+    }
+
+    @keyframes fadeUp{
+      from{transform:translateY(16px);opacity:0}
+      to{transform:translateY(0);opacity:1}
+    }
+
+    @keyframes zoomIn{
+      from{transform:scale(0.96);opacity:0}
+      to{transform:scale(1);opacity:1}
+    }
+
+    @keyframes slideLeft{
+      from{transform:translateX(-100%)}
+      to{transform:translateX(0)}
+    }
+
+    @media (max-width: 1200px){
+      .metrics-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 900px){
+      body{
+        overflow:auto;
+      }
+      .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+      }
+      .main{
+        margin-left:0;
+        height:auto;
+      }
+      #app{
+        height:auto;
+      }
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+      .auth-shell{
+        grid-template-columns:1fr;
+      }
+      .auth-left{
+        display:none;
+      }
+    }
+
+    @media (max-width: 640px){
+      .metrics-grid{
+        grid-template-columns:1fr;
+      }
+      .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .banner-copy h2{
+        font-size:28px;
+      }
+      .sidebar{
+        padding:18px 14px;
+      }
+      .main{
+        padding:16px;
+      }
+      .farmer-card{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AUTH -->
+  <div id="auth">
+    <div class="auth-shell">
+      <div class="auth-left">
+        <div class="auth-brand">
+          <div class="auth-brand-mark">🌱</div>
+          <div>
+            <h1>AgroNest Pro</h1>
+            <p>Smart Agriculture Intelligence Platform</p>
+          </div>
+        </div>
+
+        <div class="auth-copy">
+          <h2>Farm intelligence, crop support, and decision tools in one place.</h2>
+          <p>
+            Manage farmer data, explore crop and pesticide knowledge, and run a simple ML-based
+            disease screening flow in a premium dashboard experience.
+          </p>
+        </div>
+
+        <div class="auth-features">
+          <div class="auth-feature">
+            <span>📊</span>
+            <div>
+              <strong>Advanced dashboard</strong>
+              <small>Live data cards, quick metrics, and a software-level app layout.</small>
+            </div>
+          </div>
+
+          <div class="auth-feature">
+            <span>🌾</span>
+            <div>
+              <strong>Farmer management</strong>
+              <small>Add, view, and delete farmer records connected to your backend.</small>
+            </div>
+          </div>
+
+          <div class="auth-feature">
+            <span>🤖</span>
+            <div>
+              <strong>ML screening</strong>
+              <small>Multi-input scoring logic for smarter disease detection flow.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-right">
+        <div class="auth-form-wrap">
+          <div class="auth-top">
+            <h3 id="authTitle">Sign In</h3>
+            <p id="authDesc">Access your agriculture workspace and continue managing field intelligence.</p>
+          </div>
+
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="loginTab" type="button" onclick="switchAuthMode('login')">Sign In</button>
+            <button class="auth-tab" id="signupTab" type="button" onclick="switchAuthMode('signup')">Sign Up</button>
+          </div>
+
+          <div class="field" id="nameField" style="display:none;">
+            <label for="fullName">Full Name</label>
+            <input id="fullName" type="text" placeholder="Enter your full name">
+          </div>
+
+          <div class="field">
+            <label for="username">Username</label>
+            <input id="username" type="text" placeholder="Enter username">
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="Enter email">
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="Enter password">
+          </div>
+
+          <div class="auth-row">
+            <button class="text-btn" type="button" onclick="forgotPassword()">Forgot password?</button>
+          </div>
+
+          <button class="primary-btn" id="authSubmitBtn" type="button" onclick="handleAuth()">Login</button>
+
+          <p class="auth-note" id="authNote">New user? Switch to Sign Up and create your account.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-mark">🌱</div>
+        <div>
+          <h2>AgroNest</h2>
+          <p>Pro Dashboard</p>
+        </div>
+      </div>
+
+      <div class="side-label">Navigation</div>
+      <button class="nav-btn active" onclick="showSection('dashboard', this)">
+        <span class="nav-icon">📊</span><span>Dashboard</span>
+      </button>
+      <button class="nav-btn" onclick="showSection('farmers', this)">
+        <span class="nav-icon">👨‍🌾</span><span>Farmers</span>
+      </button>
+      <button class="nav-btn" onclick="showSection('crops', this)">
+        <span class="nav-icon">🌾</span><span>Crops</span>
+      </button>
+      <button class="nav-btn" onclick="showSection('disease', this)">
+        <span class="nav-icon">🦠</span><span>Diseases</span>
+      </button>
+      <button class="nav-btn" onclick="showSection('pesticides', this)">
+        <span class="nav-icon">🧪</span><span>Pesticides</span>
+      </button>
+      <button class="nav-btn" onclick="showSection('ml', this)">
+        <span class="nav-icon">🤖</span><span>ML Detection</span>
+      </button>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h3>AgroNest Workspace</h3>
+          <p>Software-level agriculture dashboard with premium UI, analytics, and tools.</p>
+        </div>
+        <div class="user-pill" id="userGreeting">Welcome</div>
+      </div>
+
+      <div class="hero-banner">
+        <img id="slider" alt="Agriculture banner"
+          src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1400&q=80">
+        <div class="banner-copy">
+          <h2>Advanced farm intelligence with premium visual design.</h2>
+          <p>
+            Explore crops, pesticides, diseases, live farmer records, and a smarter prediction module
+            inside one clean software-like experience.
+          </p>
+        </div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="section active">
+        <div class="section-head">
+          <h2>Dashboard</h2>
+          <p>Live metrics from your connected farmer system and curated agriculture data modules.</p>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric">
+            <div class="metric-top">
+              <span>Total Farmers</span>
+              <div class="metric-icon">👨‍🌾</div>
+            </div>
+            <div class="metric-value" id="totalFarmers">0</div>
+            <div class="metric-note">Current farmer records saved in your backend.</div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-top">
+              <span>Rice Farmers</span>
+              <div class="metric-icon">🌾</div>
+            </div>
+            <div class="metric-value" id="riceCount">0</div>
+            <div class="metric-note">Farmers currently tagged with rice crop.</div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-top">
+              <span>Wheat Farmers</span>
+              <div class="metric-icon">🌿</div>
+            </div>
+            <div class="metric-value" id="wheatCount">0</div>
+            <div class="metric-note">Farmers currently tagged with wheat crop.</div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-top">
+              <span>Tracked Locations</span>
+              <div class="metric-icon">📍</div>
+            </div>
+            <div class="metric-value" id="locationCount">0</div>
+            <div class="metric-note">Unique location count across all farmer records.</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Platform Highlights</h3>
+            <p class="panel-sub">This upgraded build fixes structure problems and turns the page into a cleaner product-style application.</p>
+
+            <div class="data-grid">
+              <div class="data-card">
+                <h4>Premium Layout</h4>
+                <p>Glass panels, stronger hierarchy, better spacing, and app-style navigation.</p>
+              </div>
+              <div class="data-card">
+                <h4>Live Farmer Module</h4>
+                <p>Connected to your backend with create, fetch, and delete support.</p>
+              </div>
+              <div class="data-card">
+                <h4>Expanded Knowledge Base</h4>
+                <p>Larger crop, disease, and pesticide data blocks with cleaner display.</p>
+              </div>
+              <div class="data-card">
+                <h4>Smarter Detection</h4>
+                <p>Multi-input scoring logic instead of a single direct symptom mapping.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Quick Summary</h3>
+            <p class="panel-sub">High-level view of current saved data and platform capability.</p>
+            <div class="data-grid">
+              <div class="data-card">
+                <h4 id="dashFarmerLabel">0 Farmers</h4>
+                <p>Live count synced from MongoDB-connected backend APIs.</p>
+              </div>
+              <div class="data-card">
+                <h4>20+ Crops</h4>
+                <p>Broader crop coverage to make the platform look more complete.</p>
+              </div>
+              <div class="data-card">
+                <h4>15+ Diseases</h4>
+                <p>Expanded disease cards for broader plant support coverage.</p>
+              </div>
+              <div class="data-card">
+                <h4>10+ Pesticides</h4>
+                <p>Broader pesticide reference area for crop protection workflows.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FARMERS -->
+      <section id="farmers" class="section">
+        <div class="section-head">
+          <h2>Farmers</h2>
+          <p>Add, manage, and review farmer records from your backend in a cleaner software-style interface.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Add Farmer Record</h3>
+            <p class="panel-sub">Create a new farmer entry with crop and location information.</p>
+
+            <div class="form-grid">
+              <div class="field-card">
+                <label for="name">Farmer Name</label>
+                <input id="name" type="text" placeholder="Enter farmer name">
+              </div>
+
+              <div class="field-card">
+                <label for="crop">Crop</label>
+                <input id="crop" type="text" placeholder="Enter crop name">
+              </div>
+
+              <div class="field-card full">
+                <label for="location">Location</label>
+                <input id="location" type="text" placeholder="Enter location">
+              </div>
+            </div>
+
+            <div class="row-actions">
+              <button class="btn btn-primary" onclick="addFarmer()">Add Farmer</button>
+              <button class="btn btn-secondary" onclick="clearFarmerForm()">Clear</button>
+            </div>
+
+            <div class="help">
+              Tip: Add entries like Rice, Wheat, Cotton, or locations such as Puttur, Anantapur, Kalyandurg, Tirupati.
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Farmer List</h3>
+            <p class="panel-sub">Live records pulled from your API.</p>
+            <div class="list-grid" id="farmersList">
+              <div class="empty">No farmer data yet. Add your first farmer to begin.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CROPS -->
+      <section id="crops" class="section">
+        <div class="section-head">
+          <h2>Crops</h2>
+          <p>Expanded crop library to make the platform feel richer and more complete.</p>
+        </div>
+
+        <div class="search-row">
+          <input id="cropSearch" type="text" placeholder="Search crops...">
+        </div>
+
+        <div class="data-grid" id="cropGrid">
+          <div class="data-card" data-name="rice"><h4>Rice</h4><p>Water-intensive cereal crop widely cultivated across India.</p></div>
+          <div class="data-card" data-name="wheat"><h4>Wheat</h4><p>Major cereal crop important for large-scale food production.</p></div>
+          <div class="data-card" data-name="cotton"><h4>Cotton</h4><p>Commercial fiber crop requiring pest-aware management.</p></div>
+          <div class="data-card" data-name="maize"><h4>Maize</h4><p>Versatile grain crop with food and feed usage.</p></div>
+          <div class="data-card" data-name="sugarcane"><h4>Sugarcane</h4><p>Long-duration cash crop used in sugar production.</p></div>
+          <div class="data-card" data-name="groundnut"><h4>Groundnut</h4><p>Oilseed crop with strong market relevance.</p></div>
+          <div class="data-card" data-name="soybean"><h4>Soybean</h4><p>Protein-rich oilseed crop used in multiple products.</p></div>
+          <div class="data-card" data-name="barley"><h4>Barley</h4><p>Cereal crop used for feed, food, and industrial processing.</p></div>
+          <div class="data-card" data-name="millets"><h4>Millets</h4><p>Climate-resilient grains suited to dry conditions.</p></div>
+          <div class="data-card" data-name="sunflower"><h4>Sunflower</h4><p>Oilseed crop grown for edible oil production.</p></div>
+          <div class="data-card" data-name="tomato"><h4>Tomato</h4><p>High-value vegetable crop vulnerable to diseases and pests.</p></div>
+          <div class="data-card" data-name="potato"><h4>Potato</h4><p>Major tuber crop needing strong disease management.</p></div>
+          <div class="data-card" data-name="onion"><h4>Onion</h4><p>Commercial vegetable crop with storage considerations.</p></div>
+          <div class="data-card" data-name="chilli"><h4>Chilli</h4><p>Spice crop with strong disease and pest sensitivity.</p></div>
+          <div class="data-card" data-name="banana"><h4>Banana</h4><p>Fruit crop requiring strong nutrition and disease care.</p></div>
+          <div class="data-card" data-name="mango"><h4>Mango</h4><p>Major fruit crop with seasonal management needs.</p></div>
+          <div class="data-card" data-name="turmeric"><h4>Turmeric</h4><p>Rhizome crop with medicinal and commercial value.</p></div>
+          <div class="data-card" data-name="ginger"><h4>Ginger</h4><p>Spice crop needing moisture and disease monitoring.</p></div>
+          <div class="data-card" data-name="pulses"><h4>Pulses</h4><p>Protein-rich crop group with soil fertility benefits.</p></div>
+          <div class="data-card" data-name="mustard"><h4>Mustard</h4><p>Oilseed crop important in cooler cultivation conditions.</p></div>
+        </div>
+      </section>
+
+      <!-- DISEASES -->
+      <section id="disease" class="section">
+        <div class="section-head">
+          <h2>Diseases</h2>
+          <p>Expanded plant disease reference section with broader examples and cleaner card design.</p>
+        </div>
+
+        <div class="search-row">
+          <input id="diseaseSearch" type="text" placeholder="Search diseases...">
+        </div>
+
+        <div class="data-grid" id="diseaseGrid">
+          <div class="data-card" data-name="leaf spot"><h4>Leaf Spot</h4><p>Fungal or bacterial spots on leaves; fungicide may be required.</p></div>
+          <div class="data-card" data-name="powdery mildew"><h4>Powdery Mildew</h4><p>White powder-like fungal growth on leaves and stems.</p></div>
+          <div class="data-card" data-name="rust"><h4>Rust</h4><p>Orange-brown pustules causing leaf damage and reduced vigor.</p></div>
+          <div class="data-card" data-name="blight"><h4>Blight</h4><p>Rapid plant tissue damage, often requiring fast intervention.</p></div>
+          <div class="data-card" data-name="root rot"><h4>Root Rot</h4><p>Root decay caused by poor drainage and pathogen activity.</p></div>
+          <div class="data-card" data-name="bacterial wilt"><h4>Bacterial Wilt</h4><p>Sudden wilting caused by bacterial infection in vascular tissue.</p></div>
+          <div class="data-card" data-name="fusarium wilt"><h4>Fusarium Wilt</h4><p>Soil-borne fungal wilt that blocks plant water movement.</p></div>
+          <div class="data-card" data-name="anthracnose"><h4>Anthracnose</h4><p>Dark sunken lesions on leaves, stems, and fruits.</p></div>
+          <div class="data-card" data-name="scab"><h4>Scab</h4><p>Rough lesions on fruits or tubers affecting quality.</p></div>
+          <div class="data-card" data-name="mosaic virus"><h4>Mosaic Virus</h4><p>Patchy leaf discoloration often spread by insect vectors.</p></div>
+          <div class="data-card" data-name="downy mildew"><h4>Downy Mildew</h4><p>Leaf yellowing and fungal growth under humid conditions.</p></div>
+          <div class="data-card" data-name="black spot"><h4>Black Spot</h4><p>Dark circular lesions that reduce photosynthesis area.</p></div>
+          <div class="data-card" data-name="canker"><h4>Canker</h4><p>Dead, sunken infected stem or branch regions.</p></div>
+          <div class="data-card" data-name="dieback"><h4>Dieback</h4><p>Progressive death of shoots and branches from the tip.</p></div>
+          <div class="data-card" data-name="smut"><h4>Smut</h4><p>Fungal disease producing dark powdery masses.</p></div>
+          <div class="data-card" data-name="septoria"><h4>Septoria Leaf Blotch</h4><p>Leaf lesions that reduce green area and vigor.</p></div>
+        </div>
+      </section>
+
+      <!-- PESTICIDES -->
+      <section id="pesticides" class="section">
+        <div class="section-head">
+          <h2>Pesticides</h2>
+          <p>Broader pesticide reference module for crop protection coverage.</p>
+        </div>
+
+        <div class="search-row">
+          <input id="pesticideSearch" type="text" placeholder="Search pesticides...">
+        </div>
+
+        <div class="data-grid" id="pesticideGrid">
+          <div class="data-card" data-name="neem oil"><h4>Neem Oil</h4><p>Natural option used against aphids and whiteflies.</p></div>
+          <div class="data-card" data-name="chlorpyrifos"><h4>Chlorpyrifos</h4><p>Broad-spectrum insecticide used in pest management.</p></div>
+          <div class="data-card" data-name="imidacloprid"><h4>Imidacloprid</h4><p>Used against sucking pests like aphids and jassids.</p></div>
+          <div class="data-card" data-name="spinosad"><h4>Spinosad</h4><p>Effective for some caterpillar and leaf-miner control.</p></div>
+          <div class="data-card" data-name="bt spray"><h4>BT Spray</h4><p>Biological control option targeting larval pests.</p></div>
+          <div class="data-card" data-name="cypermethrin"><h4>Cypermethrin</h4><p>Synthetic pyrethroid for a range of insect pests.</p></div>
+          <div class="data-card" data-name="malathion"><h4>Malathion</h4><p>Used against chewing and sucking insect pests.</p></div>
+          <div class="data-card" data-name="carbaryl"><h4>Carbaryl</h4><p>Broad insect control used across multiple crops.</p></div>
+          <div class="data-card" data-name="diazinon"><h4>Diazinon</h4><p>Insecticide used in field and garden settings.</p></div>
+          <div class="data-card" data-name="fipronil"><h4>Fipronil</h4><p>Commonly used for soil and surface pest management.</p></div>
+          <div class="data-card" data-name="acephate"><h4>Acephate</h4><p>Used against sucking pests and some caterpillars.</p></div>
+          <div class="data-card" data-name="mancozeb"><h4>Mancozeb</h4><p>Protective fungicide used across many disease programs.</p></div>
+        </div>
+      </section>
+
+      <!-- ML -->
+      <section id="ml" class="section">
+        <div class="section-head">
+          <h2>ML Detection</h2>
+          <p>Upgraded to a simple rule-scoring model using multiple symptom factors instead of one direct lookup.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Disease Screening Input</h3>
+            <p class="panel-sub">Select multiple field conditions to generate a likely disease assessment.</p>
+
+            <div class="form-grid">
+              <div class="field-card">
+                <label for="symptom">Primary Symptom</label>
+                <select id="symptom">
+                  <option value="">Select symptom</option>
+                  <option value="yellow">Yellow Leaves</option>
+                  <option value="spots">Leaf Spots</option>
+                  <option value="wilting">Wilting</option>
+                  <option value="powder">White Powder</option>
+                  <option value="root">Root Damage</option>
+                </select>
+              </div>
+
+              <div class="field-card">
+                <label for="humidity">Humidity</label>
+                <select id="humidity">
+                  <option value="">Select humidity</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+
+              <div class="field-card">
+                <label for="soil">Soil Condition</label>
+                <select id="soil">
+                  <option value="">Select soil condition</option>
+                  <option value="dry">Dry</option>
+                  <option value="normal">Normal</option>
+                  <option value="waterlogged">Waterlogged</option>
+                </select>
+              </div>
+
+              <div class="field-card">
+                <label for="spread">Spread Speed</label>
+                <select id="spread">
+                  <option value="">Select spread speed</option>
+                  <option value="slow">Slow</option>
+                  <option value="medium">Medium</option>
+                  <option value="fast">Fast</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row-actions">
+              <button class="btn btn-primary" onclick="predictDisease()">Run Detection</button>
+              <button class="btn btn-secondary" onclick="resetML()">Reset</button>
+            </div>
+
+            <div class="ml-result" id="result">Select conditions and run detection.</div>
+          </div>
+
+          <div class="panel">
+            <h3>How this works</h3>
+            <p class="panel-sub">This is not a real trained ML model, but it simulates software-level detection logic more realistically.</p>
+
+            <div class="data-grid">
+              <div class="data-card">
+                <h4>Multi-input scoring</h4>
+                <p>Prediction uses symptom, humidity, soil condition, and spread speed together.</p>
+              </div>
+              <div class="data-card">
+                <h4>Weighted outcomes</h4>
+                <p>Different conditions increase the score for different possible diseases.</p>
+              </div>
+              <div class="data-card">
+                <h4>More realistic UX</h4>
+                <p>Better than a single dropdown mapping because it behaves more like a decision engine.</p>
+              </div>
+              <div class="data-card">
+                <h4>Future-ready</h4>
+                <p>This layout can later connect to a real Python ML backend.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    let authMode = "login";
+
+    function switchAuthMode(mode){
+      authMode = mode;
+      const loginTab = document.getElementById("loginTab");
+      const signupTab = document.getElementById("signupTab");
+      const nameField = document.getElementById("nameField");
+      const authTitle = document.getElementById("authTitle");
+      const authDesc = document.getElementById("authDesc");
+      const authBtn = document.getElementById("authSubmitBtn");
+      const authNote = document.getElementById("authNote");
+
+      if(mode === "login"){
+        loginTab.classList.add("active");
+        signupTab.classList.remove("active");
+        nameField.style.display = "none";
+        authTitle.innerText = "Sign In";
+        authDesc.innerText = "Access your agriculture workspace and continue managing field intelligence.";
+        authBtn.innerText = "Login";
+        authNote.innerText = "New user? Switch to Sign Up and create your account.";
+      } else {
+        signupTab.classList.add("active");
+        loginTab.classList.remove("active");
+        nameField.style.display = "block";
+        authTitle.innerText = "Create Account";
+        authDesc.innerText = "Start using AgroNest Pro with a premium agriculture dashboard experience.";
+        authBtn.innerText = "Create Account";
+        authNote.innerText = "Already have an account? Switch back to Sign In.";
+      }
+    }
+
+    function handleAuth(){
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const fullName = document.getElementById("fullName").value.trim();
+
+      if(authMode === "signup"){
+        if(!fullName || !username || !email || !password){
+          alert("Please fill all sign up fields.");
+          return;
+        }
+      } else {
+        if(!username || !email || !password){
+          alert("Please fill username, email, and password.");
+          return;
+        }
+      }
+
+      const displayName = authMode === "signup" ? fullName : username;
+      document.getElementById("userGreeting").innerText = "Welcome, " + displayName;
+      document.getElementById("auth").style.display = "none";
+      document.getElementById("app").style.display = "block";
+    }
+
+    function forgotPassword(){
+      const email = prompt("Enter your email address:");
+      if(email){
+        alert("Password reset link sent to " + email);
+      }
+    }
+
+    function showSection(id, btn){
+      document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      if(btn) btn.classList.add("active");
+    }
+
+    const images = [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1492496913980-501348b61469?auto=format&fit=crop&w=1400&q=80"
+    ];
+
+    let bannerIndex = 0;
+    setInterval(() => {
+      const slider = document.getElementById("slider");
+      if(!slider) return;
+      bannerIndex = (bannerIndex + 1) % images.length;
+      slider.style.opacity = "0.35";
+      setTimeout(() => {
+        slider.src = images[bannerIndex];
+        slider.style.opacity = "1";
+      }, 250);
+    }, 3500);
+
+    function attachSearch(inputId, gridId){
+      const input = document.getElementById(inputId);
+      const grid = document.getElementById(gridId);
+      if(!input || !grid) return;
+
+      input.addEventListener("input", () => {
+        const value = input.value.trim().toLowerCase();
+        grid.querySelectorAll("[data-name]").forEach(card => {
+          const name = (card.getAttribute("data-name") || "").toLowerCase();
+          card.style.display = name.includes(value) ? "block" : "none";
+        });
+      });
+    }
+
+    attachSearch("cropSearch", "cropGrid");
+    attachSearch("diseaseSearch", "diseaseGrid");
+    attachSearch("pesticideSearch", "pesticideGrid");
+
+    function clearFarmerForm(){
+      document.getElementById("name").value = "";
+      document.getElementById("crop").value = "";
+      document.getElementById("location").value = "";
+    }
+
+    async function addFarmer(){
+      const name = document.getElementById("name").value.trim();
+      const crop = document.getElementById("crop").value.trim();
+      const location = document.getElementById("location").value.trim();
+
+      if(!name || !crop || !location){
+        alert("Please fill all farmer fields.");
+        return;
+      }
+
+      await fetch("https://agronest.onrender.com/api/farmer", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name, crop, location})
+      });
+
+      clearFarmerForm();
+      loadFarmers();
+    }
+
+    async function deleteFarmer(id){
+      await fetch(`https://agronest.onrender.com/api/farmer/${id}`, {
+        method:"DELETE"
+      });
+      loadFarmers();
+    }
+
+    async function loadFarmers(){
+      const res = await fetch("https://agronest.onrender.com/api/farmers");
+      const data = await res.json();
+
+      let rice = 0;
+      let wheat = 0;
+      const locations = new Set();
+
+      data.forEach(f => {
+        const crop = (f.crop || "").trim().toLowerCase();
+        if(crop === "rice") rice++;
+        if(crop === "wheat") wheat++;
+        if(f.location) locations.add(f.location.trim().toLowerCase());
+      });
+
+      document.getElementById("totalFarmers").innerText = data.length;
+      document.getElementById("riceCount").innerText = rice;
+      document.getElementById("wheatCount").innerText = wheat;
+      document.getElementById("locationCount").innerText = locations.size;
+      document.getElementById("dashFarmerLabel").innerText = `${data.length} Farmers`;
+
+      const farmersList = document.getElementById("farmersList");
+      if(!data.length){
+        farmersList.innerHTML = `<div class="empty">No farmer data yet. Add your first farmer to begin.</div>`;
+        return;
+      }
+
+      farmersList.innerHTML = data.map(f => `
+        <div class="farmer-card">
+          <div class="farmer-meta">
+            <div class="farmer-name">${f.name || "Unknown"}</div>
+            <div class="farmer-sub">${f.crop || "No crop"} · ${f.location || "No location"}</div>
+          </div>
+          <button class="btn btn-danger" onclick="deleteFarmer('${f._id}')">Delete</button>
+        </div>
+      `).join("");
+    }
+
+    function predictDisease(){
+      const symptom = document.getElementById("symptom").value;
+      const humidity = document.getElementById("humidity").value;
+      const soil = document.getElementById("soil").value;
+      const spread = document.getElementById("spread").value;
+      const resultBox = document.getElementById("result");
+
+      if(!symptom || !humidity || !soil || !spread){
+        resultBox.innerText = "Please select all detection inputs.";
+        return;
+      }
+
+      const scores = {
+        "Leaf Spot Disease": 0,
+        "Bacterial Wilt": 0,
+        "Powdery Mildew": 0,
+        "Root Rot": 0,
+        "Nitrogen Deficiency": 0
+      };
+
+      if(symptom === "spots"){
+        scores["Leaf Spot Disease"] += 4;
+      }
+      if(symptom === "wilting"){
+        scores["Bacterial Wilt"] += 4;
+        scores["Root Rot"] += 2;
+      }
+      if(symptom === "yellow"){
+        scores["Nitrogen Deficiency"] += 4;
+      }
+      if(symptom === "powder"){
+        scores["Powdery Mildew"] += 5;
+      }
+      if(symptom === "root"){
+        scores["Root Rot"] += 5;
+      }
+
+      if(humidity === "high"){
+        scores["Powdery Mildew"] += 2;
+        scores["Leaf Spot Disease"] += 2;
+        scores["Root Rot"] += 1;
+      }
+      if(humidity === "low"){
+        scores["Nitrogen Deficiency"] += 1;
+      }
+
+      if(soil === "waterlogged"){
+        scores["Root Rot"] += 4;
+        scores["Bacterial Wilt"] += 1;
+      }
+      if(soil === "dry"){
+        scores["Nitrogen Deficiency"] += 2;
+      }
+
+      if(spread === "fast"){
+        scores["Bacterial Wilt"] += 2;
+        scores["Leaf Spot Disease"] += 1;
+      }
+      if(spread === "slow"){
+        scores["Nitrogen Deficiency"] += 1;
+      }
+
+      const best = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
+      const disease = best[0];
+      const score = best[1];
+
+      let advice = "";
+      if(disease === "Leaf Spot Disease"){
+        advice = "Suggested action: inspect leaves, isolate spread, and consider fungicide guidance.";
+      } else if(disease === "Bacterial Wilt"){
+        advice = "Suggested action: review soil health, remove heavily affected plants, and improve sanitation.";
+      } else if(disease === "Powdery Mildew"){
+        advice = "Suggested action: improve airflow and consider sulfur-based management guidance.";
+      } else if(disease === "Root Rot"){
+        advice = "Suggested action: improve drainage immediately and reduce excess moisture.";
+      } else if(disease === "Nitrogen Deficiency"){
+        advice = "Suggested action: review fertilization and nutrient balance in the soil.";
+      }
+
+      resultBox.innerText = `Likely result: ${disease} (confidence score: ${score}). ${advice}`;
+    }
+
+    function resetML(){
+      document.getElementById("symptom").value = "";
+      document.getElementById("humidity").value = "";
+      document.getElementById("soil").value = "";
+      document.getElementById("spread").value = "";
+      document.getElementById("result").innerText = "Select conditions and run detection.";
+    }
 
     loadFarmers();
-}
-
-async function deleteFarmer(id) {
-    await fetch(`https://agronest.onrender.com/api/farmer/${id}`, {
-        method: "DELETE"
-    });
-
-    loadFarmers();
-}
-
-async function loadFarmers() {
-    const res = await fetch("https://agronest.onrender.com/api/farmers");
-    const data = await res.json();
-
-    // Dashboard
-    document.getElementById("totalFarmers").innerText = data.length;
-
-    let rice = 0;
-    let wheat = 0;
-
-    data.forEach(f => {
-        if (f.crop.toLowerCase() === "rice") rice++;
-        if (f.crop.toLowerCase() === "wheat") wheat++;
-    });
-
-    document.getElementById("riceCount").innerText = rice;
-    document.getElementById("wheatCount").innerText = wheat;
-
-    // List
-    document.getElementById("farmersList").innerHTML =
-        data.map(f => 
-            `<p>
-                👨‍🌾 <b>${f.name}</b> - ${f.crop} (${f.location})
-                <button onclick="deleteFarmer('${f._id}')">❌</button>
-            </p>`
-        ).join("");
-}
-
-// Load automatically
-loadFarmers();
-</script>
-</script>
-</script>
+  </script>
 </body>
 </html>
